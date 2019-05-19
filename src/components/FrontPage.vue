@@ -24,8 +24,6 @@
        v-for="book in books" 
         :book="book"
         :key="book.index"/>
-       
-    
       </div>
 
     </div>

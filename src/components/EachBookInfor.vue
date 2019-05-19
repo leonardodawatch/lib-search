@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div  @click="turnToDetails" class="overall-container">
+    <div @click="turnToDetails" class="overall-container">
       <div class="left">
         <img id="cover" src="../assets/2x61ou7ynr12s6zha5rzf1on7.jpg">
       </div>
@@ -32,7 +32,7 @@
 <script>
 export default {
   props: {
-    books: {
+    book: {
       type: Object,
       required: true
     }
