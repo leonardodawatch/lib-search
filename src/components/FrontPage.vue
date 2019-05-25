@@ -6,6 +6,7 @@
         <img class="account" src="../assets/account.svg">
       </div>
     </header>
+    
     <div class="main-container" :class="{'main-container-bgdown':searchDone}">
       <div :class="{'search-bar':!searchDone,'search-bar-up':searchDone }">
         <input type="input" placeholder="请输入关键字搜索" v-model="searchText" @keydown.enter="fetchInfor">
@@ -15,17 +16,16 @@
       <div v-if="onSearch" class="search-animation">
         <div class="search-animation1"></div>
       </div>
-      <p v-if="books.length" class="grey">
+
+  
+      <div v-if="books.length" v-show='!detailed' @click="disappear" >
+         <p class="grey">
         共检索到
         <span class="red">{{books.length}}</span> 本书籍
       </p>
-      <div v-if="books.length" >
-       <EachBookInfor 
-       v-for="book in books" 
-        :book="book"
-        :key="book.index"/>
+          <EachBookInfor v-for="book in books" :book="book" :key="book.index"/>
       </div>
-
+      <router-view></router-view>
     </div>
     <footer class="footer">
       <p>加入我们-联系方式-意见反馈</p>
@@ -37,7 +37,6 @@
 <script>
 import EachBookInfor from "./EachBookInfor";
 
-
 export default {
   components: { EachBookInfor },
   data() {
@@ -45,6 +44,7 @@ export default {
       onSearch: false,
       searchDone: false,
       searchText: "",
+      detailed:false,
       books: []
     };
   },
@@ -59,10 +59,9 @@ export default {
         this.onSearch = true;
         this.searchDone = true;
         fetch(url).then(
-        
           function(res) {
             vm.onSearch = false;
-            if (res.ok) {      
+            if (res.ok) {
               res.json().then(function(jsondata) {
                 if (jsondata.data.length === 0) {
                   alert("无搜索结果！");
@@ -84,13 +83,21 @@ export default {
         );
       } //else
     },
-    
+    disappear(){
+     
+      this.detailed=true;
+    },
+    retureToBooks(){
+      this.$route.go(-1);
+    }
+
   }
 };
 </script>
 
 <style>
-.grey{
+.grey {
+  
   color: #aaa;
 }
 .red {
@@ -187,6 +194,7 @@ body {
   margin-top: 80px;
   display: inline-flex;
   justify-content: center;
+  margin-bottom: 20px;
 }
 input {
   width: 430px;
@@ -215,7 +223,7 @@ button {
   background-color: #ff3333;
   height: 70px;
   padding: 10px;
-  margin-top:230px;
+  margin-top: 230px;
   /* margin:bottom; */
 }
 

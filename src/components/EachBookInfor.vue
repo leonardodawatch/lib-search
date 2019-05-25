@@ -1,36 +1,38 @@
 <template>
-  <div>
-    <div @click="turnToDetails" class="overall-container">
-      <div class="left">
-        <img id="cover" src="../assets/2x61ou7ynr12s6zha5rzf1on7.jpg">
-      </div>
-      <div class="right">
-        <p id="title">
-          <i class="iconfont">&#xe600;</i>
-          {{book.title}}
+  <div @click="turnToDetails" class="overall-container">
+    <div class="left">
+      <img id="cover" src="../assets/2x61ou7ynr12s6zha5rzf1on7.jpg">
+    </div>
+    <div class="right">
+      <p id="title">
+        <i class="iconfont">&#xe600;</i>
+        {{book.title}}
+      </p>
+      <div id="book-other-attr">
+        <p>
+          作者：
+          <span>{{book.author}}</span>
         </p>
-        <div id="book-other-attr">
-          <p>
-            作者：
-            <span>{{book.author}}</span>
-          </p>
-          <p>
-            出版社：
-            <span>{{book.publisher}}</span>
-          </p>
-          <p>
-            时间：
-            <span>{{book.year}}</span>
-          </p>
-        </div>
+        <p>
+          出版社：
+          <span>{{book.publisher}}</span>
+        </p>
+        <p>
+          时间：
+          <span>{{book.year}}</span>
+        </p>
       </div>
     </div>
-    <router-view></router-view>
+    <div class="star">
+    <Stars/>
+    </div>
   </div>
 </template>
 
 <script>
+import Stars from '../components/Stars';
 export default {
+  components:{Stars},
   props: {
     book: {
       type: Object,
@@ -39,26 +41,31 @@ export default {
   },
   data() {
     return {
-      books:[]
+      // books: []
     };
   },
-  watch:{
-      books:function(newVal,oldVal){
-          this.books=newVal;
-      }
-  },
+  // watch: {
+  //   books: function(newVal, oldVal) {
+  //     this.books = newVal;
+  //   }
+  // },
   methods: {
-        turnToDetails(){
-          let vm= this;
-            vm.detailed=true;
-            let id=vm.$props.book.index;
-            vm.$router.push(`/detailed/${id}`);
-        }
+    turnToDetails() {
+      let vm = this;
+      vm.detailed = true;
+      let id = vm.$props.book.index;
+      vm.$router.push(`/detailed/${id}`);
     }
-}
+  }
+};
 </script>
 
 <style scoped>
+.star{
+  float: right;
+  margin-right: 25px;
+ margin-top:15px;
+}
 @font-face {
   font-family: "iconfont"; /* project id 1193824 */
   src: url("//at.alicdn.com/t/font_1193824_mrgsmzky2gh.eot");
@@ -93,12 +100,11 @@ export default {
   text-align: left;
 }
 .overall-container {
-  width: 800px;
+  width: 750px;
   height: 270px;
   padding: 20px;
   background-color: white;
   margin: 20px auto;
-
   box-shadow: 2px 2px 5px #aaa;
 }
 </style>
