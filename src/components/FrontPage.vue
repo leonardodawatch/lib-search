@@ -1,12 +1,5 @@
 <template>
   <div>
-    <header class="header">
-      <div class="header-container">
-        <img class="headerlogo" src="../assets/headerlogo.svg">
-        <img class="account" src="../assets/account.svg">
-      </div>
-    </header>
-    
     <div class="main-container" :class="{'main-container-bgdown':searchDone}">
       <div :class="{'search-bar':!searchDone,'search-bar-up':searchDone }">
         <input type="input" placeholder="请输入关键字搜索" v-model="searchText" @keydown.enter="fetchInfor">
@@ -18,19 +11,15 @@
       </div>
 
   
-      <div v-if="books.length" v-show='!detailed' @click="disappear" >
+      <div v-if="books.length" >
          <p class="grey">
         共检索到
         <span class="red">{{books.length}}</span> 本书籍
       </p>
           <EachBookInfor v-for="book in books" :book="book" :key="book.index"/>
       </div>
-      <router-view></router-view>
+      <!-- <router-view></router-view> -->
     </div>
-    <footer class="footer">
-      <p>加入我们-联系方式-意见反馈</p>
-      <p>POWERED BY TWT STUDIO copyright 2000-2019</p>
-    </footer>
   </div>
 </template>
 
@@ -44,7 +33,7 @@ export default {
       onSearch: false,
       searchDone: false,
       searchText: "",
-      detailed:false,
+     
       books: []
     };
   },
@@ -82,13 +71,6 @@ export default {
           }
         );
       } //else
-    },
-    disappear(){
-     
-      this.detailed=true;
-    },
-    retureToBooks(){
-      this.$route.go(-1);
     }
 
   }
@@ -103,14 +85,8 @@ export default {
 .red {
   color: #ff3333;
 }
-* {
-  box-sizing: border-box;
-  transition: all 0.5s ease-out;
-}
-.header {
-  background-color: #ff3333;
-  height: 60px;
-}
+
+
 .search-animation {
   width: 30px;
   height: 30px;
@@ -157,20 +133,7 @@ body {
   margin: 0;
   background-color: #f7f7f7;
 }
-.header-container {
-  margin-left: 50px;
-  margin-right: 50px;
-  overflow: hidden;
-}
-.headerlogo {
-  width: 200px;
-  height: 60px;
-}
-.account {
-  width: 50px;
-  height: 60px;
-  float: right;
-}
+
 .main-container {
   background-image: url("../assets/background.png");
   background-size: 830px;
@@ -219,18 +182,7 @@ button {
   border-radius: 25px;
   outline: none;
 }
-.footer {
-  background-color: #ff3333;
-  height: 70px;
-  padding: 10px;
-  margin-top: 230px;
-  /* margin:bottom; */
-}
 
-footer p {
-  color: #eee;
-  opacity: 0.4;
-  text-align: center;
-  font-size: 10px;
-}
+
+
 </style>

@@ -39,16 +39,6 @@ export default {
       required: true
     }
   },
-  data() {
-    return {
-      // books: []
-    };
-  },
-  // watch: {
-  //   books: function(newVal, oldVal) {
-  //     this.books = newVal;
-  //   }
-  // },
   methods: {
     turnToDetails() {
       let vm = this;

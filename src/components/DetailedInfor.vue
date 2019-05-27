@@ -14,11 +14,9 @@
               <p class="title">
                 <strong>{{thisbook.title}}</strong><Stars/>
               </p>
-              
-            
             <p>
               作者:
-              <span>{{thisbook.authorPrimary}}</span>
+              <span>{{author}}</span>
             </p>
             <p>
               出版社:
@@ -61,36 +59,14 @@
       </div>
       <div class="comments">
         <p class="p-title">全部书评</p>
-        <div class="each-commont">
+        <div v-for="comment in comments" :key="comment.id" class="each-commont">
           <div class="circle">
             <img src="../assets/img-744566a1baed8374c0efdba2eb51c851.jpg">
           </div>
-          <div>
+          <div >
             <i class="name">Leonardodawatch</i>
             <Stars/>
-            <p>死并非生的对立面，而是作为生的一部分永存</p>
-          </div>
-          <hr>
-        </div>
-        <div class="each-commont">
-          <div class="circle">
-            <img src="../assets/img-744566a1baed8374c0efdba2eb51c851.jpg">
-          </div>
-          <div>
-            <i class="name">Leonardodawatch</i>
-            <Stars/>
-            <p>一切都是想象力的问题，我们的责任从想象力中开始</p>
-          </div>
-          <hr>
-        </div>
-        <div class="each-commont">
-          <div class="circle">
-            <img src="../assets/img-744566a1baed8374c0efdba2eb51c851.jpg">
-          </div>
-          <div>
-            <i class="name">Leonardodawatch</i>
-            <Stars/>
-            <p>语言已在时光的凹坑中死去，无声地沉积在火山口湖黑暗的底部</p>
+            <p >{{comment.content}}</p>
           </div>
           <hr>
         </div>
@@ -98,8 +74,8 @@
           <div class="circle">
             <img src="../assets/img-744566a1baed8374c0efdba2eb51c851.jpg">
           </div>
-          <textarea/>
-          <button>提交</button>
+          <textarea v-model="comment"  @keydown.enter="commit "/>
+          <button @click="commit ">提交</button>
         </div>
       </div>
     </div>
@@ -109,6 +85,7 @@
 import fav from "../assets/fav.png";
 import unfav from "../assets/unfav.png";
 import Stars from "../components/Stars";
+let commentId=1;
 export default {
   components: { Stars },
   props: {},
@@ -116,7 +93,23 @@ export default {
     return {
       fav_url: unfav,
       thisbook: [],
-      holdings: []
+      holdings: [],
+      author:[],
+      comment:'',
+      comments:[
+        {
+          id:commentId++, 
+         content:"死并非生的对立面，而是作为生的一部分永存"
+        },
+        {
+          id:commentId++, 
+         content:"一切都是想象力的问题，我们的责任从想象力中开始"
+        },
+        {
+          id:commentId++, 
+         content:"语言已在时光的凹坑中死去，无声地沉积在火山口湖黑暗的底部"
+        }
+      ]
     };
   },
   created() {
@@ -135,17 +128,19 @@ export default {
           res.json().then(function(jsondata) {
             vm.thisbook = jsondata.data;
             vm.holdings = jsondata.data.holding;
+            vm.author=jsondata.data.authorPrimary[0];
           });
         }
       });
     },
-    retureToBooks() {
-      this.$route.back();
-    },
     change() {
       if (this.fav_url === unfav) this.fav_url = fav;
       else this.fav_url = unfav;
-    }
+    },
+   commit(){
+    this.comments.push({id:commentId++,content:this.comment});
+    this.comment='';
+   }
   }
 };
 </script>
@@ -160,17 +155,21 @@ export default {
 }
 .commonts-own {
   margin-top: 30px;
+  
 }
 textarea {
   height: 150px;
   width: 540px;
   float: right;
+  font-size: 18px;
+  outline: none;
 }
 button {
   float: right;
   margin-top: 20px;
   border-radius: 5px;
   box-shadow: 2px 2px 4px #eee;
+  /* margin-bottom: 30px; */
 }
 hr {
   border: dotted #ddd;
@@ -207,6 +206,7 @@ hr {
   width: 140px;
   margin-top: -17px;
   margin-right: 25px;
+  cursor: pointer;
 }
 .title {
   font-size: 20px;
@@ -224,7 +224,7 @@ hr {
 }
 .overall-container {
   background-color: #eee;
-  margin: 50px auto;
+  margin: 100px auto;
   width: 750px;
   box-shadow: 2px 2px 5px #ddd;
 }
@@ -247,8 +247,9 @@ hr {
   padding-bottom: 30px;
 }
 .comments {
-  height: auto;
   min-height: 800px;
+  padding:50px;
+  overflow: hidden;
 }
 .basic-messages,
 .inlibrary-messages,
